@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: responses_postgres
+    environment:
+      POSTGRES_DB: responses_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5433:5432"
+    volumes:
+      - responses_postgres_data:/var/lib/postgresql/data
+    networks:
+      - responses_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  responses_service:
+    build: .
+    container_name: responses_service
+    ports:
+      - "8001:8000"
+    environment:
+      - POSTGRES_HOST=responses_postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=responses_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - SECRET_KEY=my-super-secret-key-for-responses
+      - ALGORITHM=HS256
+      - AUTH_SERVICE_URL=http://localhost:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - responses_network
+
+volumes:
+  responses_postgres_data:
+
+networks:
+  responses_network:
+    driver: bridge
