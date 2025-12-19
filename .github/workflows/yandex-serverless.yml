@@ -26,7 +26,7 @@ jobs:
           docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/task-responses-service:latest
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-l.
     needs: build-and-push
     steps:
       - name: Deploy to Yandex Serverless Container
@@ -37,8 +37,8 @@ jobs:
           folder-id: ${{ secrets.YC_FOLDER_ID }}
           revision-image-url: cr.yandex/${{ secrets.YC_REGISTRY_ID }}/task-responses-service:latest
           revision-service-account-id: ${{ secrets.YC_SA_ID }}
-          revision-cores: "1"
-          revision-memory: "536870912"
+          revision-cores: 1
+          revision-memory: 536870912
           revision-env: |
             POSTGRES_HOST=51.250.26.59
             POSTGRES_PORT=5432
