@@ -37,8 +37,8 @@ jobs:
           folder-id: ${{ secrets.YC_FOLDER_ID }}
           revision-image-url: cr.yandex/${{ secrets.YC_REGISTRY_ID }}/task-responses-service:latest
           revision-service-account-id: ${{ secrets.YC_SA_ID }}
-          revision-cpu: "1"
-          revision-memory: "512M"
+          revision-cores: "1"
+          revision-memory: "536870912"
           revision-env: |
             POSTGRES_HOST=51.250.26.59
             POSTGRES_PORT=5432
